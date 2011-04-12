@@ -1,3 +1,15 @@
-<p>Controller: <b><%= controller %></b></p>
-<p>Action: <b><%= action %></b></p>
-<p><%= description %></p>
+<form action="/advice/add" method="post">
+	<p>
+		<label for="nick">昵称</label>
+		<input name="nick" id="nick" type="text" />
+	</p>
+	<p>
+		<label for="content"/>您的高见</label>
+		<textarea name="content" id="content"></textarea>
+	</p>
+	<p>
+		<input type="submit" value="搞定!希望对你们有帮助吧~" />
+	</p>
+</form>
+
+

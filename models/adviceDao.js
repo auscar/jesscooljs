@@ -11,14 +11,6 @@ var This = this;
 client.on('error',function(e){
 	This.onError(e);	
 });
-client.on('end',function(e){
-	console.log('client end');
-	This.onEnd(e);
-});
-client.addListener('row',function(e){
-	console.log('row');
-	This.onEnd(e);
-});
 
 this.addAdvice = function(advice){
 		
@@ -26,32 +18,41 @@ this.addAdvice = function(advice){
 		client.connect();
 		
 		//return cilent.query( 'insert into ? set content=?,intime=?',
-		client.query( 'insert into advice set content=?',
-		[ advice.content ]);	
-
-		//关闭数据库连接
-		client.end();
-}
-
-this.allAdvice = function(){
-		//打开数据库连接
-		client.connect();
-		var _ret = [];
-		client.query('select * from User', function(err,ret,field){
-			if( err ){
-				console.log('读取数据库出错');
-				client.end();
-				return
-			}
-			_ret.push(ret);
-			console.log(ret);
+		var query = client.query( 'insert into advice set content=?,nick=?,intime=?',
+		[ advice.content,advice.nick,advice.intime ]);	
+		query.on('end',function(){
+			This.onInsertEnd(query);
 		});
 		//关闭数据库连接
 		client.end();
-		return _ret;
+}
+
+this.list = function(fn){
+		//打开数据库连接
+		client.connect();
+
+		//这个query方法是异步的!!!!
+		var query = client.query('select * from advice order by id desc', function(err,ret,field){
+			if( err ){
+				console.log('读取数据库出错');
+				return
+			}
+			fn.call(this,ret);
+		});
+
+		//开始查询
+		client.end();
+		return query;
 }
 this.onError = function(){}
 this.onEnd = function(){}
+this.onInsertEnd = function(){}
+
+//this.addAdvice({
+//	nick : 'auscar',
+//	content : '第一条建议',
+//	intime : '2011-04-12 23:12'
+//});
 
 
 

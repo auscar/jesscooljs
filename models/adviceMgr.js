@@ -1,14 +1,23 @@
 var adviceDao = require( './adviceDao' );
 
-var advice = {
-	content : 'this is an advice'
+this.addAdvice = function(advice){
+	adviceDao.addAdvice(advice);
 }
-adviceDao.onError = function(){
-	console.log('faild');
+this.listAdvice = function(fn){
+	adviceDao.list(fn);
 }
-adviceDao.onEnd = function(){
-	console.log('success');
-}
-console.log('test...');
-adviceDao.addAdvice(advice);
+
+//var advice = {
+//	content : 'this is an advice'
+//}
+//adviceDao.onError = function(){
+//	console.log('faild');
+//}
+//adviceDao.onEnd = function(){
+//	console.log('success');
+//}
+//adviceDao.onInsertEnd = function(query){
+//	console.log(query);
+//}
+//adviceDao.addAdvice(advice);
 
